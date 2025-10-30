@@ -1,0 +1,36 @@
+name: Simple CD Showcase
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Target Environment'
+        required: true
+        default: 'dev'
+        type: choice
+        options:
+        - dev
+        - uat  
+        - prod
+
+jobs:
+  deploy:
+    name: Deploy to ${{ github.event.inputs.environment }}
+    runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.environment }}
+    
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+    
+    - name: Deploy Application
+      run: |
+        echo "🚀 Deploying to ${{ github.event.inputs.environment }} environment"
+        echo "Environment: ${{ github.event.inputs.environment }}"
+        echo "Deployer: ${{ github.actor }}"
+        echo "Deployment completed successfully!"
+    
+    - name: Verify Deployment
+      run: |
+        echo "✅ Deployment verification completed"
+        echo "Application is healthy and running"
